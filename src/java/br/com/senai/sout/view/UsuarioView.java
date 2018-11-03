@@ -23,7 +23,7 @@ public class UsuarioView {
 
     public void fazUsuarioDefault() {
         if (!usuarioDao.isPossuiUsuarioAdmin()) {
-            usuarioDao.salvar(new Usuario("123", "login", "senha", "S"));
+            usuarioDao.salvar(new Usuario("123", "login", "senha", "ROLE_ADMIN"));
         }
         atualizaLista();
     }
