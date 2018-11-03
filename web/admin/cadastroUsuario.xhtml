@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"     
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+    <title>Controle de usuários</title>
+    </h:head>
+    <h:body>
+        <h:form class="mx-auto" style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; float: left; display: inline-block; width: 97%;"  >
+            <h:inputHidden  value ="#{usuarioView.usuario.id}"/>
+            <br/>
+            <h:outputText  value="Nome" />
+            <br/>
+            <h:inputText style="width: 100%; " value="#{usuarioView.usuario.nome}" />
+            <br/>  
+            <h:outputText value="E-mail" />
+            <br/>
+            <h:inputText style="width: 100%; " value="#{usuarioView.usuario.email}" />
+            <br/>
+            <h:outputText value="Telefone" />
+            <br/>
+            <h:inputText style="width: 100%; " value="#{usuarioView.usuario.telefone}" />
+            <br/>
+            <h:outputText value="Login" />
+            <br/>
+            <h:inputText style="width: 100%; " value="#{usuarioView.usuario.login}" />
+            <br/>
+            <h:outputText value="Senha" />
+            <br/>
+            <h:inputSecret style="width: 100%; " value="#{usuarioView.usuario.password}" />
+            <br/>
+            <h:outputText value="Permissão" />
+            <br/>
+
+            <h:selectOneMenu  value="#{usuarioView.usuario.iePermissao}" >
+                <f:selectItem itemValue="ROLE_ADMIN" itemLabel="Admin" />
+                <f:selectItem itemValue="ROLE_USER" itemLabel="Usuário comum" />
+            </h:selectOneMenu>
+
+            <br/>
+            <h:commandButton  value ="Salvar" actionListener="#{usuarioView.salvaUsuario()}"/>
+
+
+
+            <h:commandButton action="inicial" value="Voltar"/>
+        </h:form>
+
+        <h:form style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; width: 97%; ">
+            <table style="width: 100%;height: 100%; float: inside"> 
+                <tr>
+                    <th>Nome</th>
+                    <th>Login</th>
+                    <th>Senha</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Permissão</th>
+                </tr>
+
+                <ui:repeat var="elem" value="#{usuarioView.listaUsuarios}">
+
+                    <tr>                       
+                        <td>
+
+                            <h:inputText style="width: 90%" value="#{elem.nome}" />
+                        </td>
+                        <td>
+
+                            <h:inputText style="width: 90%" value="#{elem.login}"
+                                         />
+                        </td>
+                        <td>
+
+                            <h:inputText style="width: 90%" value="#{elem.password}" />
+                        </td>
+                        <td>
+
+                            <h:inputText style="width: 90%" value="#{elem.telefone}" />
+                        </td>
+                        <td>
+
+                            <h:inputText style="width: 90%" value="#{elem.email}" />
+                        </td>
+                        <td>
+                            <h:selectOneMenu  value="#{elem.iePermissao}" id="users" >
+                                <f:selectItem itemValue="ROLE_ADMIN" itemLabel="Admin" />
+                                <f:selectItem itemValue="ROLE_USER" itemLabel="Usuário comum" />
+                            </h:selectOneMenu>
+                        </td>
+                        <td>
+                            <h:commandLink value="Editar" 
+                                           action="#{usuarioView.salvaUsuario(elem)}" />
+                            /
+
+                            <h:commandLink value="Excluir" 
+                                           action="#{usuarioView.excluiUsuario(elem)}" />
+                        </td>
+                    </tr>
+                </ui:repeat>
+            </table>
+        </h:form>
+    </h:body>
+</html>
+
