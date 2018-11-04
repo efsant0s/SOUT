@@ -9,6 +9,7 @@ import br.com.senai.sout.dao.UsuarioDao;
 import br.com.senai.sout.model.Usuario;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.servlet.ServletException;
 
 /**
  *
@@ -23,7 +24,7 @@ public class UsuarioView {
 
     public void fazUsuarioDefault() {
         if (!usuarioDao.isPossuiUsuarioAdmin()) {
-            usuarioDao.salvar(new Usuario("123", "login", "senha", "ROLE_ADMIN"));
+            usuarioDao.salvar(new Usuario("123", "123", "123", "ROLE_ADMIN"));
         }
         atualizaLista();
     }
@@ -56,7 +57,11 @@ public class UsuarioView {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    public void salvaUsuario(){
+    public void salvaUsuario() throws ServletException{
+        
+        if(usuarioDao.verificaLoginExistente(usuario.getLogin())){
+            throw new ServletException(new Exception("Já existe um usuário de login"));
+        }
         usuarioDao.salvar(usuario);
         atualizaLista();
         usuario = new Usuario();

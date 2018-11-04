@@ -16,12 +16,13 @@ import java.util.List;
 public class UsuarioTeste {
 
     public static void main(String[] args) throws Exception {
-        testeCadastraUsuario();
+        //testeCadastraUsuario();
         //testeEditaUsuario();      
         //testeCadastraListarTodosUsuarios();
         //limpaUsuarios();
         //testeCadastraUsuario();
         //verificaUsuarioAdmin();
+        verificaUsuarioExistenteLogin();
         
     }
 
@@ -89,5 +90,15 @@ public class UsuarioTeste {
         }else{
             System.out.println("Não possui admin");
         }
+    }
+
+    private static void verificaUsuarioExistenteLogin() {
+         UsuarioDao userDao = new UsuarioDao();
+        if(userDao.getQuantidadeRegistros() == 0L){
+             testeCadastraUsuario();
+        }
+        List<Usuario> lista = userDao.buscarTodos();
+        Usuario usuarioEditar = lista.get(0);
+        System.out.println(userDao.verificaLoginExistente(usuarioEditar.getLogin()));
     }
 }

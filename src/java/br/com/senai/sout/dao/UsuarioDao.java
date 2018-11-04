@@ -36,8 +36,8 @@ public class UsuarioDao {
     public Usuario buscaId(int id) {
         return Repository.getEm().find(Usuario.class, id);
     }
-  
-    public Usuario buscaLogin(String login){
+
+    public Usuario buscaLogin(String login) {
         return (Usuario) Repository.getEm().
                 createQuery("select u from Usuario u where "
                         + "u.login like :login").setParameter("login", "%" + login + "%")
@@ -50,7 +50,8 @@ public class UsuarioDao {
                         + "u.nome like :nome").setParameter("nome", "%" + nome + "%")
                 .getSingleResult();
     }
-    public Long getQuantidadeRegistros(){
+
+    public Long getQuantidadeRegistros() {
         return (Long) Repository.getEm().
                 createQuery("select count(u) qtd_registros from Usuario u")
                 .getSingleResult();
@@ -59,6 +60,12 @@ public class UsuarioDao {
     public boolean isPossuiUsuarioAdmin() {
         return ((Long) Repository.getEm().
                 createQuery("select count(u) qtd_registros from Usuario u where u.iePermissao = 'ROLE_ADMIN'")
+                .getSingleResult() > 0);
+    }
+
+    public boolean verificaLoginExistente(String login) {
+        return ((Long) Repository.getEm().
+                createQuery("select count(u) qtd_registros from Usuario u where u.login = :login").setParameter("login", login)
                 .getSingleResult() > 0);
     }
 }
