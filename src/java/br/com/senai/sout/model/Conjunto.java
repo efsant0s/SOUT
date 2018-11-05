@@ -29,6 +29,10 @@ public class Conjunto implements Serializable {
     private int id;
     @Column
     private String nmTabelaNome;
+    @Column
+    private String alturaReferencia;
+    @Column
+    private String larguraReferncia;
     @Column(length = 3)
     private String ieTipoBanco;
     @ManyToOne() 
@@ -53,6 +57,22 @@ public class Conjunto implements Serializable {
 
     public void setNmTabelaNome(String nmTabelaNome) {
         this.nmTabelaNome = nmTabelaNome;
+    }
+
+    public String getAlturaReferencia() {
+        return alturaReferencia;
+    }
+
+    public void setAlturaReferencia(String alturaReferencia) {
+        this.alturaReferencia = alturaReferencia;
+    }
+
+    public String getLarguraReferncia() {
+        return larguraReferncia;
+    }
+
+    public void setLarguraReferncia(String larguraReferncia) {
+        this.larguraReferncia = larguraReferncia;
     }
 
     public String getIeTipoBanco() {
@@ -89,16 +109,9 @@ public class Conjunto implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + this.id;
-        hash = 47 * hash + Objects.hashCode(this.nmTabelaNome);
-        hash = 47 * hash + Objects.hashCode(this.ieTipoBanco);
-        hash = 47 * hash + Objects.hashCode(this.usuario);
-        hash = 47 * hash + Objects.hashCode(this.ieTipoConjunto);
+        int hash = 5;
         return hash;
     }
-
-     
 
     @Override
     public boolean equals(Object obj) {
@@ -118,6 +131,12 @@ public class Conjunto implements Serializable {
         if (!Objects.equals(this.nmTabelaNome, other.nmTabelaNome)) {
             return false;
         }
+        if (!Objects.equals(this.alturaReferencia, other.alturaReferencia)) {
+            return false;
+        }
+        if (!Objects.equals(this.larguraReferncia, other.larguraReferncia)) {
+            return false;
+        }
         if (!Objects.equals(this.ieTipoBanco, other.ieTipoBanco)) {
             return false;
         }
@@ -127,10 +146,10 @@ public class Conjunto implements Serializable {
         if (!Objects.equals(this.usuario, other.usuario)) {
             return false;
         }
+        if (!Objects.equals(this.capturas, other.capturas)) {
+            return false;
+        }
         return true;
     }
-
-    
-
 
 }

@@ -8,7 +8,41 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-       Pagina Usuario
+        <h:form enctype="multipart/form-data" class="mx-auto" style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; float: left; display: inline-block; width: 97%;"  >
+            <h:inputHidden  value ="#{conjuntoView.conjunto.id}"/>
+            <br/>
+            <h:outputText value="Nome da tabela" />
+            <br/>
+            <h:inputText style="width: 100%; " value="#{conjuntoView.conjunto.nmTabelaNome}" />
+            <br/>
+            <h:outputText  value="Tipo de banco" />
+            <br/>
+            <h:selectOneMenu  value="#{conjuntoView.conjunto.ieTipoBanco}" >
+                <f:selectItem itemValue="REL" itemLabel="Relacional" />
+                <f:selectItem itemValue="NREL" itemLabel="Não relacional" />
+            </h:selectOneMenu>
+            <br/>
+            <h:selectOneMenu  value="#{conjuntoView.conjunto.ieTipoConjunto}" >
+                <f:selectItem itemValue="EXP" itemLabel="Expresso" />
+                <f:selectItem itemValue="PER" itemLabel="Personalizado" />
+            </h:selectOneMenu>
+            <br/>          
+
+     
+        <h:outputText  value="Upload imagem referência" />
+        
+            <div id="upload-button">
+                <h:inputFile value="#{conjuntoView.image}">
+                    <f:passThroughAttribute name="accept" value="image/png"/>
+                    <f:ajax event="change" listener="#{conjuntoView.doUpload()}" execute="@form" render="@form"/>
+                </h:inputFile>
+            </div>
+            <h:panelGroup rendered="#{conjuntoView.upladed}" layout="block" style="text-align: center">
+                <img src="image.png" height="400" width="400" style="border:3px solid #DDD;"/>
+            </h:panelGroup>
+            <h:commandButton  value ="Avançar" actionListener="#{conjuntoView.salvaConjunto()}"/>
+            <h:commandButton action="inicial" value="Voltar"/>
+        </h:form>
     </h:body>
 </html>
 

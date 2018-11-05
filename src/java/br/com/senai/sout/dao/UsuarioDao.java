@@ -62,7 +62,7 @@ public class UsuarioDao {
                 createQuery("select count(u) qtd_registros from Usuario u where u.iePermissao = 'ROLE_ADMIN'")
                 .getSingleResult() > 0);
     }
-
+     
     public boolean verificaLoginExistente(String login) {
         return ((Long) Repository.getEm().
                 createQuery("select count(u) qtd_registros from Usuario u where u.login = :login").setParameter("login", login)
