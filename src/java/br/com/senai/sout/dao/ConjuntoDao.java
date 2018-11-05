@@ -41,4 +41,12 @@ public class ConjuntoDao {
                 createQuery("select count(u) qtd_registros from Conjunto u")
                 .getSingleResult();
     }
+
+    public Conjunto getLastConjuntoByUsuario(String loginUsuario) {
+       //TODO Pode dar merda
+        return (Conjunto) Repository.getEm().
+                createQuery("select u from Conjunto u, Usuario a where u.usuario.id = a.id and a.login = :login").setParameter("nome", loginUsuario)
+                .getSingleResult();
+   
+    }
 }
