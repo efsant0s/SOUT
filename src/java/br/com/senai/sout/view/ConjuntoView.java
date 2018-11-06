@@ -7,15 +7,14 @@ package br.com.senai.sout.view;
 
 import br.com.senai.sout.dao.ConjuntoDao;
 import br.com.senai.sout.dao.UsuarioDao;
-import br.com.senai.sout.model.Captura;
 import br.com.senai.sout.model.Conjunto;
 import br.com.senai.sout.model.Usuario;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 import org.springframework.security.core.Authentication;
@@ -25,9 +24,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
  *
  * @author Aluno
  */
-@ManagedBean
-public class ConjuntoView {
-
+@ManagedBean(name = "conjuntoView")
+@SessionScoped
+public class ConjuntoView implements Serializable{
+    
     private ConjuntoDao conjdao = new ConjuntoDao();
     private Conjunto conjunto = new Conjunto();
     private String caminhoImagem;

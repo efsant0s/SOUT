@@ -5,26 +5,48 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Salvar capturas</title>
     </h:head>
     <h:body>
         <h:form enctype="multipart/form-data" class="mx-auto" style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; float: left; display: inline-block; width: 97%;"  >
-            <h:inputHidden  value ="#{capturaView.captura.id}"/>
-            <br/>
-            <h:outputText value="Nome da tabela" />
-            <br/>
-           
-        <h:outputText  value="Upload imagem referência" />        
+            <h:outputText  value="Adicionar imagem" />        
             <div id="upload-button">
                 <h:inputFile value="#{capturaView.image}">
                     <f:passThroughAttribute name="accept" value="image/png"/>
-                    <f:ajax event="change" listener="#{capturaView.fazUploadImagem()}" execute="@form" render="@form"/>
+                    <f:ajax event="change" listener="#{capturaView.salvaCaptura()}" execute="@form" render="@form"/>
                 </h:inputFile>
             </div>
-            
-            <h:commandButton  value ="Avançar" actionListener="#{capturaView.salvacaptura()}"/>
-            <h:commandButton action="inicial" value="Voltar"/>
+             <table style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; width: 97%; "> 
+                <tr>
+                    <th>Caminho</th>
+                    <th>Nome conjunto</th>
+                    <th>Ações</th>
+                </tr>
+
+                <ui:repeat var="elem" value="#{capturaView.capturas}">
+                    <tr>                       
+                        <td>
+                            <h:inputText style="width: 90%" value="#{elem.caminho}" />
+                        </td>
+                        <td>
+                            <h:inputText style="width: 90%" value="#{elem.conjuntoOrigem.nmTabelaNome}"/>
+                        </td>
+
+                        <td>
+                            <h:commandLink value="Editar" 
+                                           action="#{capturaView.editaCaptura(elem)}" />
+                            /
+
+                            <h:commandLink value="Excluir" 
+                                           action="#{capturaView.excluiCaptura(elem)}" />
+                        </td>
+                    </tr>
+                </ui:repeat>
+            </table>
         </h:form>
+        
+
+        <h:commandButton action="inicial" value="Voltar"/>
     </h:body>
 </html>
 
