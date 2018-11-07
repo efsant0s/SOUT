@@ -30,6 +30,8 @@ public class Conjunto implements Serializable {
     @Column
     private String nmTabelaNome;
     @Column
+    private String caminho;
+    @Column
     private String alturaReferencia;
     @Column
     private String larguraReferncia;

@@ -26,8 +26,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 @ManagedBean(name = "conjuntoView")
 @SessionScoped
-public class ConjuntoView implements Serializable{
-    
+public class ConjuntoView implements Serializable {
+
     private ConjuntoDao conjdao = new ConjuntoDao();
     private Conjunto conjunto = new Conjunto();
     private String caminhoImagem;
@@ -74,12 +74,31 @@ public class ConjuntoView implements Serializable{
         this.conjunto = conjunto;
     }
 
-    public void doUpload() throws Exception {
+    public void criaPastasSeNaoExistentes() {
+        String path = new File("").getAbsolutePath() + "\\imagens";
+        File f = new File(path);
+        if (!f.exists()) {
+            f.mkdir();
+        }
+        f = new File(path + "\\conjunto");
+        if (!f.exists()) {
+            f.mkdir();
+        }
+        f = new File(new File("").getAbsolutePath() + "\\imagens\\recortes");
+        if (!f.exists()) {
+            f.mkdir();
+        }
+        
 
+    }
+
+    public void doUpload() throws Exception {
+        criaPastasSeNaoExistentes();
         InputStream in = image.getInputStream();
 
-        String path = new File("").getAbsolutePath() + "\\imagens\\";
+        String path = new File("").getAbsolutePath() + "\\imagens\\conjunto";
         File f = new File(path + image.getSubmittedFileName());
+
         f.createNewFile();
         FileOutputStream out = new FileOutputStream(f);
 
@@ -95,7 +114,7 @@ public class ConjuntoView implements Serializable{
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
         upladed = true;
-        this.caminhoImagem = image.getSubmittedFileName();
+        this.caminhoImagem = path + image.getSubmittedFileName();;
     }
 
     public void salvaConjunto() {
