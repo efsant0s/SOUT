@@ -16,7 +16,7 @@
                     <f:ajax event="change" listener="#{capturaView.salvaCaptura()}" execute="@form" render="@form"/>
                 </h:inputFile>
             </div>
-             <table style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; width: 97%; "> 
+            <table style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; width: 97%; "> 
                 <tr>
                     <th>Caminho</th>
                     <th>Nome conjunto</th>
@@ -33,18 +33,14 @@
                         </td>
 
                         <td>
-                            <h:commandLink value="Editar" 
-                                           action="#{capturaView.editaCaptura(elem)}" />
-                            /
-
-                            <h:commandLink value="Excluir" 
-                                           action="#{capturaView.excluiCaptura(elem)}" />
+                            <h:commandButton value="Excluir" 
+                                             action="#{capturaView.excluiCaptura(elem)}" />
                         </td>
                     </tr>
                 </ui:repeat>
             </table>
         </h:form>
-        
+
 
         <h:commandButton action="inicial" value="Voltar"/>
     </h:body>

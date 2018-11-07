@@ -87,7 +87,6 @@ public class CapturaView  implements Serializable{
 
     public void editaCaptura(Captura cap) throws Exception {
         InputStream in = image.getInputStream();
-
         String path = new File("").getAbsolutePath() + "\\imagens\\";
         File f = new File(path + image.getSubmittedFileName());
         f.createNewFile();

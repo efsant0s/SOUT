@@ -30,7 +30,7 @@ public class Captura implements Serializable {
     private int id;
     @Column
     private String caminho;
-    @ManyToOne(cascade=CascadeType.REMOVE) 
+    @ManyToOne() 
     @JoinColumn(name = "ID_CONJUNTO")
     private Conjunto conjuntoOrigem;
     @OneToMany(mappedBy = "capturaTela" , cascade = CascadeType.REMOVE)
