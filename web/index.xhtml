@@ -4,22 +4,30 @@
       >
 
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"/>
+   
     <h:head>
         <title>Login </title>
     </h:head>
     <h:body >
         <h:inputHidden value="#{usuarioView}" />
 
-
-        <form style="padding: 15px;height: 20%; border: 1px solid black; float: left; display: inline-block; width: 20%;"  action="j_spring_security_check" method="post">
+        <div  class="d-flex justify-content-center" style="margin-top: 18%;">
+        <form class="form" action="j_spring_security_check" method="post">
             <h:panelGrid columns="2">
-                <h:outputText value="Usuario" />
+                <h:outputLabel for="j_username"><i class="material-icons md-36">person</i></h:outputLabel>
                 <h:inputText id="j_username" />
-                <h:outputText value="Senha" />
+                 <h:outputLabel for="j_password"><i class="material-icons md-36">lock</i></h:outputLabel>
                 <h:inputSecret id="j_password" />
             </h:panelGrid>
-            <h:commandButton type="submit" value="Entrar" class=" btn btn-dark"/>
+            <div class="d-flex justify-content-center"> <h:commandButton type="submit" value="Entrar" class=" btn btn-dark"/> </div>
         </form>
+        </div>
+        
+        
 
+    
     </h:body>
 </html>
