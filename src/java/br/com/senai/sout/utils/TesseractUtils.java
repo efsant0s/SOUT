@@ -16,7 +16,7 @@ public class TesseractUtils {
     public static String retornaStringTraduzida(String caminho, String idioma) throws TesseractException{
         Tesseract instance = Tesseract.getInstance();
         instance.setLanguage(idioma);
-
+        //instance.setDatapath("C://Program Files//Apache Software Foundation//Apache Tomcat 8.0.27//temp//tessdata");
         File imageFile = new File(caminho);
         return instance.doOCR(imageFile);
     }
