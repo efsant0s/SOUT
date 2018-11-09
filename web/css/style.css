@@ -1,10 +1,27 @@
+hmtl,body{
+    height:100%;
+ 
+background-image: url("../imgs/047 Fly High.png");
+    
+     background-repeat: no-repeat;
+     background-size: cover;
+     background-position: center;
+     
+     
+}
+
 .form{
+    border-radius: 10px;
      padding: 15px;
-     height: 25%; 
-     border: 1px solid black; 
+     height: 25%;  
      float: left; 
      display: inline-block;
      width: 20%;
+     background-image: url("../imgs/hazemaster-gray-gradient-ui-background.jpg");
+     background-position: center;
+     background-repeat: no-repeat;
+     background-size: cover;
+   
  
 }
 .material-icons {
@@ -45,3 +62,9 @@
 /* Rules for using icons as white on a dark background. */
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.material-icons{
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+    
+}
