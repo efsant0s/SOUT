@@ -85,31 +85,7 @@ public class CapturaView  implements Serializable{
         atualizaLista();
     }
 
-    public void editaCaptura(Captura cap) throws Exception {
-        InputStream in = image.getInputStream();
-        String path = new File("").getAbsolutePath() + "\\imagens\\";
-        File f = new File(path + image.getSubmittedFileName());
-        f.createNewFile();
-        FileOutputStream out = new FileOutputStream(f);
 
-        byte[] buffer = new byte[1024];
-        int length;
-
-        while ((length = in.read(buffer)) > 0) {
-            out.write(buffer, 0, length);
-        }
-
-        out.close();
-        in.close();
-
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
-        upladed = true;
-        String caminhoImagem = image.getSubmittedFileName();
-        cap.setCaminho(caminhoImagem);
-        cap.setConjuntoOrigem(conjuntoView.getConjunto());
-        this.dao.salvar(cap);
-        atualizaLista();
-    }
 
     public void salvaCaptura() throws Exception {
         InputStream in = image.getInputStream();

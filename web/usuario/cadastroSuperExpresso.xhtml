@@ -26,17 +26,18 @@
                 <ui:repeat var="elem" value="#{expressoView.lista}">
                     <tr>                       
                         <td>
-                            <h:inputText style="width: 90%" value="#{elem.caminho}" />
+                            <h:inputText style="width: 90%" value="#{elem}" />
                         </td>
                         <td>
-                            <img src="#{elem.caminho}"/>
+                           <h:commandButton value="Excluir" 
+                                            action="#{expressoView.remove(elem)}" />
                         </td>
                     </tr>
                 </ui:repeat>
             </table>
 
-            <h:panelGroup rendered="#{expressoView.textoPronto}" layout="block" style="text-align: center">
-                <h:inputTextarea value="#{expressoView.textoTraducao}" />
+            <h:panelGroup rendered="#{expressoView.textoPronto}"   layout="block" style="text-align: center">
+                <h:inputTextarea rows="10" cols="500" value="#{expressoView.textoTraducao}" />
             </h:panelGroup>
             <h:commandButton action="inicial" value="Voltar"/>
             <h:commandButton action="#{expressoView.escreveCampo()}" value="Traduzir"/>

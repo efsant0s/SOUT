@@ -5,10 +5,12 @@
  */
 package br.com.senai.sout.view;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 
@@ -17,6 +19,7 @@ import javax.servlet.http.Part;
  * @author Celina
  */
 @ManagedBean(name = "imagemView")
+@SessionScoped
 public class ImagemView {
 
     private String caminhoImagem;
@@ -28,12 +31,14 @@ public class ImagemView {
         this.criaPastasSeNaoExistentes();
     }
 
-    public void setPersonalizado() {
+    public String setPersonalizado() {
         this.tipo = "PER";
+        return "cadastroSuperExpresso";
     }
 
-    public void setExpresso() {
+    public String setExpresso() {
         this.tipo = "EXP";
+        return "cadastroSuperExpresso";
     }
 
     public String getTipo() {
@@ -89,10 +94,12 @@ public class ImagemView {
 
     }
 
+    
+
     public void salvaCaptura() throws Exception {
         InputStream in = image.getInputStream();
 
-        String path = new File("").getAbsolutePath() + "\\imagens\\super";
+        String path = new File("").getAbsolutePath() + "\\imagens\\super\\";
         int cont = 0;
         File f = new File(path + cont + image.getSubmittedFileName());
         while (f.exists()) {
@@ -113,7 +120,6 @@ public class ImagemView {
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
         upladed = true;
-
+        this.caminhoImagem = cont + image.getSubmittedFileName();
     }
-
 }

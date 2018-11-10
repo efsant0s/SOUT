@@ -5,19 +5,25 @@
  */
 package br.com.senai.sout.view;
 
-import br.com.senai.sout.model.Expresso;
-import br.com.senai.sout.utils.TesseractUtils;
+
+import br.com.senai.sout.utils.ConversorImagemTexto;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.servlet.http.Part;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -25,15 +31,22 @@ import javax.servlet.http.Part;
  */
 @ManagedBean(name = "expressoView")
 @SessionScoped
-public class ExpressoView implements Serializable {
+public class ExpressoView {
 
-    private static List<Expresso> lista = new ArrayList<>();
-    @ManagedProperty(value = "#{imagemView}")
+    private static List<String> lista = new ArrayList<>();
     private ImagemView imagemView;
     private Part image;
     private boolean upladed;
     private boolean textoPronto;
     private String textoTraducao;
+
+    public  List<String> getLista() {
+        return lista;
+    }
+
+    public  void setLista(List<String> lista) {
+        ExpressoView.lista = lista;
+    }
 
     public ImagemView getImagemView() {
         return imagemView;
@@ -59,13 +72,7 @@ public class ExpressoView implements Serializable {
         this.textoTraducao = textoTraducao;
     }
 
-    public List<Expresso> getLista() {
-        return lista;
-    }
-
-    public void setLista(List<Expresso> lista) {
-        this.lista = lista;
-    }
+    
 
     public Part getImage() {
         return image;
@@ -83,12 +90,20 @@ public class ExpressoView implements Serializable {
         this.upladed = upladed;
     }
 
+    public void remove(String exp) {
+        this.lista.remove(exp);
+    }
+
     public ExpressoView() {
         criaPastasSeNaoExistentes();
-        lista.add(new Expresso(0, imagemView.getCaminhoImagem()));
-        
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        this.imagemView
+                = (ImagemView) FacesContext.getCurrentInstance().getApplication()
+                        .getELResolver().getValue(elContext, null, "imagemView");
+        lista.add(imagemView.getCaminhoImagem());
+
     }
-   
+
     public void criaPastasSeNaoExistentes() {
         String path = new File("").getAbsolutePath() + "\\imagens";
         File f = new File(path);
@@ -113,7 +128,7 @@ public class ExpressoView implements Serializable {
     public void salvaCaptura() throws Exception {
         InputStream in = image.getInputStream();
 
-        String path = new File("").getAbsolutePath() + "\\imagens\\super";
+        String path = new File("").getAbsolutePath() + "\\imagens\\super\\";
         int cont = 0;
         File f = new File(path + cont + image.getSubmittedFileName());
         while (f.exists()) {
@@ -135,14 +150,13 @@ public class ExpressoView implements Serializable {
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
         upladed = true;
-        lista.add(new Expresso(cont, f.getAbsolutePath()));
+        lista.add(cont + image.getSubmittedFileName());
     }
 
     public void escreveCampo() throws Exception {
-        String textoTotal = "";
-        for (Expresso expresso : lista) {
-            textoTotal +=  TesseractUtils.retornaStringTraduzida(expresso.getCaminho(), "eng");
-        }
+        String textoTotal = ""; 
+        ConversorImagemTexto conversorImagemTexto = new ConversorImagemTexto((ArrayList<String>) lista);
+        textoTotal = conversorImagemTexto.processarImagem();
         textoTraducao = textoTotal;
         this.textoPronto = true;
     }

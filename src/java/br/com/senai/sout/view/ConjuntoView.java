@@ -96,7 +96,7 @@ public class ConjuntoView implements Serializable {
         criaPastasSeNaoExistentes();
         InputStream in = image.getInputStream();
 
-        String path = new File("").getAbsolutePath() + "\\imagens\\conjunto";
+        String path = new File("").getAbsolutePath() + "\\imagens\\conjunto\\";
         File f = new File(path + image.getSubmittedFileName());
 
         f.createNewFile();
