@@ -9,6 +9,7 @@
     </h:head>
     <h:body>
         <h:form enctype="multipart/form-data" class="mx-auto" style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; float: left; display: inline-block; width: 97%;"  >
+            <h:inputHidden  value ="#{imagemView}"/>
             <h:outputText  value="Adicionar imagem" />        
             <div id="upload-button">
                 <h:inputFile value="#{expressoView.image}">

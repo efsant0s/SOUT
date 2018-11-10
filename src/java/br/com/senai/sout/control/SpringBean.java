@@ -53,7 +53,7 @@ public class SpringBean {
             return url + "/admin/inicial.jsf";
         }
         if (permissoes.contains("ROLE_USER")) {
-            return url + "/usuario/inicial.jsf";
+            return url + "/usuario/cadastroImagem.jsf";
         }
         return url + "index.jsf";
     }

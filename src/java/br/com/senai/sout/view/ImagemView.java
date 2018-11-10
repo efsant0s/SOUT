@@ -5,66 +5,51 @@
  */
 package br.com.senai.sout.view;
 
-import br.com.senai.sout.model.Expresso;
-import br.com.senai.sout.utils.TesseractUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 
 /**
  *
- * @author Aluno
+ * @author Celina
  */
-@ManagedBean(name = "expressoView")
-@SessionScoped
-public class ExpressoView implements Serializable {
+@ManagedBean(name = "imagemView")
+public class ImagemView {
 
-    private static List<Expresso> lista = new ArrayList<>();
-    @ManagedProperty(value = "#{imagemView}")
-    private ImagemView imagemView;
+    private String caminhoImagem;
     private Part image;
+    private String tipo;
     private boolean upladed;
-    private boolean textoPronto;
-    private String textoTraducao;
 
-    public ImagemView getImagemView() {
-        return imagemView;
+    public ImagemView() {
+        this.criaPastasSeNaoExistentes();
     }
 
-    public void setImagemView(ImagemView imagemView) {
-        this.imagemView = imagemView;
+    public void setPersonalizado() {
+        this.tipo = "PER";
     }
 
-    public boolean isTextoPronto() {
-        return textoPronto;
+    public void setExpresso() {
+        this.tipo = "EXP";
     }
 
-    public void setTextoPronto(boolean textoPronto) {
-        this.textoPronto = textoPronto;
+    public String getTipo() {
+        return tipo;
     }
 
-    public String getTextoTraducao() {
-        return textoTraducao;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public void setTextoTraducao(String textoTraducao) {
-        this.textoTraducao = textoTraducao;
+    public String getCaminhoImagem() {
+        return caminhoImagem;
     }
 
-    public List<Expresso> getLista() {
-        return lista;
-    }
-
-    public void setLista(List<Expresso> lista) {
-        this.lista = lista;
+    public void setCaminhoImagem(String caminhoImagem) {
+        this.caminhoImagem = caminhoImagem;
     }
 
     public Part getImage() {
@@ -83,13 +68,7 @@ public class ExpressoView implements Serializable {
         this.upladed = upladed;
     }
 
-    public ExpressoView() {
-        criaPastasSeNaoExistentes();
-        lista.add(new Expresso(0, imagemView.getCaminhoImagem()));
-        
-    }
-   
-    public void criaPastasSeNaoExistentes() {
+    private void criaPastasSeNaoExistentes() {
         String path = new File("").getAbsolutePath() + "\\imagens";
         File f = new File(path);
         if (!f.exists()) {
@@ -129,21 +108,12 @@ public class ExpressoView implements Serializable {
         while ((length = in.read(buffer)) > 0) {
             out.write(buffer, 0, length);
         }
-
         out.close();
         in.close();
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
         upladed = true;
-        lista.add(new Expresso(cont, f.getAbsolutePath()));
+
     }
 
-    public void escreveCampo() throws Exception {
-        String textoTotal = "";
-        for (Expresso expresso : lista) {
-            textoTotal +=  TesseractUtils.retornaStringTraduzida(expresso.getCaminho(), "eng");
-        }
-        textoTraducao = textoTotal;
-        this.textoPronto = true;
-    }
 }
