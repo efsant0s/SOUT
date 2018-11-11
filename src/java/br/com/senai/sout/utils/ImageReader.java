@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.senai.sout.imagem;
+package br.com.senai.sout.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,33 +21,18 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Leonardo.Lima
  */
-@WebServlet(name = "ImageReader", urlPatterns = {"/image.png"})
+@WebServlet("/images/*")
 public class ImageReader extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        try {
-            String path = (String) request.getSession().getAttribute("path");
-            String contentType = getServletContext().getMimeType(path);
-            response.setContentType(contentType);
-            
-            FileInputStream in=new FileInputStream(new File(path));
-            OutputStream out=response.getOutputStream();
-            
-            byte[] buffer=new byte[1024];
-            int length;
-            
-            while((length=in.read(buffer))>0){
-                out.write(buffer, 0, length);
-            }
-            
-            in.close();
-
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
+        String filename = request.getPathInfo().substring(1);
+        File file = new File(new File("").getAbsolutePath() + "\\imagens", filename);
+        response.setHeader("Content-Type", getServletContext().getMimeType(filename));
+        response.setHeader("Content-Length", String.valueOf(file.length()));
+        response.setHeader("Content-Disposition", "inline; filename=\"" + filename + "\"");
+        Files.copy(file.toPath(), response.getOutputStream());
 
     }
 

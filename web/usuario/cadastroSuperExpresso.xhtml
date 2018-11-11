@@ -3,12 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"     
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      >
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"/>
+    
     <h:head>
         <title>Salvar capturas</title>
     </h:head>
     <h:body>
-        <h:form enctype="multipart/form-data" class="mx-auto" style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; float: left; display: inline-block; width: 97%;"  >
+        <h:form enctype="multipart/form-data" class="d-flex justify-content-center" style="padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; border: 1px solid black;"  >
             <h:inputHidden  value ="#{imagemView}"/>
             <h:outputText  value="Adicionar imagem" />        
             <div id="upload-button">
@@ -26,21 +32,22 @@
                 <ui:repeat var="elem" value="#{expressoView.lista}">
                     <tr>                       
                         <td>
-                            <h:inputText style="width: 90%" value="#{elem}" />
+                            <h:graphicImage value="#{expressoView.getImagemCaminho(elem)}"></h:graphicImage>
+                            <h:inputText readonly="true" style="width: 90%" value="#{elem}" />
                         </td>
                         <td>
-                           <h:commandButton value="Excluir" 
-                                            action="#{expressoView.remove(elem)}" />
+                            <h:commandButton style="padding-left: 15px;"   value="Remover" 
+                                             action="#{expressoView.remove(elem)}" />
                         </td>
                     </tr>
                 </ui:repeat>
             </table>
 
             <h:panelGroup rendered="#{expressoView.textoPronto}"   layout="block" style="text-align: center">
-                <h:inputTextarea rows="10" cols="500" value="#{expressoView.textoTraducao}" />
+                <h:inputTextarea rows="10" cols="150" value="#{expressoView.textoTraducao}" />
             </h:panelGroup>
-            <h:commandButton action="inicial" value="Voltar"/>
-            <h:commandButton action="#{expressoView.escreveCampo()}" value="Traduzir"/>
+            <h:commandButton action="cadastroImagem" value="Voltar"/>
+            <h:commandButton action="#{expressoView.escreveCampo()}" value="Transcrever texto da imagem"/>
         </h:form>
 
 

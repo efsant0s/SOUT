@@ -5,43 +5,47 @@
  */
 package br.com.senai.sout.view;
 
+import br.com.senai.sout.model.Imagem;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.List;
+import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 
 /**
  *
- * @author Celina
+ * @author Eduardo-PC
  */
-@ManagedBean(name = "imagemView")
-@SessionScoped
-public class ImagemView {
+@ManagedBean(name = "personalizadoView")
+public class PersonalizadoView {
 
     private String caminhoImagem;
     private Part image;
-    private String tipo;
-    private static boolean upladed;
+    private ImagemView imagemView;
+    private List<String> listaImagem;
+    private static boolean uploaded;
 
-    public ImagemView() {
-        this.criaPastasSeNaoExistentes();
+    public ImagemView getImagemView() {
+        return imagemView;
     }
 
-    public String setPersonalizado() {
-        this.tipo = "PER";
-        return "cadastroSuperExpresso";
+    public void setImagemView(ImagemView imagemView) {
+        this.imagemView = imagemView;
     }
 
-    public String setExpresso() {
-        this.tipo = "EXP";
-        return "cadastroSuperExpresso";
+    public boolean isUploaded() {
+        return uploaded;
     }
 
-    public String getTipo() {
-        return tipo;
+    public void setUploaded(boolean uploaded) {
+        PersonalizadoView.uploaded = uploaded;
+    }
+
+    public String getImagemCaminho() {
+        return "/images/" + this.caminhoImagem;
     }
 
     public String getCaminhoImagem() {
@@ -60,25 +64,32 @@ public class ImagemView {
         this.image = image;
     }
 
-    public String getImagemCaminho() {
-        return "/images/" + this.caminhoImagem;
+    public List<String> getListaImagem() {
+        return listaImagem;
     }
 
-    public boolean isUpladed() {
-        return upladed;
+    public void setListaImagem(List<String> listaImagem) {
+        this.listaImagem = listaImagem;
     }
 
-    public void setUpladed(boolean upladed) {
-        this.upladed = upladed;
+    public PersonalizadoView() {
+        criaPastasSeNaoExistentes();
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        this.imagemView
+                = (ImagemView) FacesContext.getCurrentInstance().getApplication()
+                        .getELResolver().getValue(elContext, null, "imagemView");
+        if (imagemView.getCaminhoImagem() != null && !imagemView.getCaminhoImagem().isEmpty()) {
+            listaImagem.add(imagemView.getCaminhoImagem());
+        }
+
     }
 
-    private void criaPastasSeNaoExistentes() {
+    public void criaPastasSeNaoExistentes() {
         String path = new File("").getAbsolutePath() + "\\imagens";
         File f = new File(path);
         if (!f.exists()) {
             f.mkdir();
         }
-
     }
 
     public void salvaCaptura() throws Exception {
@@ -86,10 +97,10 @@ public class ImagemView {
 
         String path = new File("").getAbsolutePath() + "\\imagens\\";
         int cont = 0;
-        File f = new File(path + cont + "ref-" + image.getSubmittedFileName());
+        File f = new File(path + cont + "pers-" + image.getSubmittedFileName());
         while (f.exists()) {
             cont++;
-            f = new File(path + cont + "ref-" + image.getSubmittedFileName());
+            f = new File(path + cont + "pers-" + image.getSubmittedFileName());
         }
         f.createNewFile();
         FileOutputStream out = new FileOutputStream(f);
@@ -104,8 +115,8 @@ public class ImagemView {
         in.close();
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
-        upladed = true;
-        this.caminhoImagem = cont + "ref-" + image.getSubmittedFileName();
+        uploaded = true;
+        this.caminhoImagem = cont + "pers-" + image.getSubmittedFileName();
     }
 
 }

@@ -80,16 +80,6 @@ public class ConjuntoView implements Serializable {
         if (!f.exists()) {
             f.mkdir();
         }
-        f = new File(path + "\\conjunto");
-        if (!f.exists()) {
-            f.mkdir();
-        }
-        f = new File(new File("").getAbsolutePath() + "\\imagens\\recortes");
-        if (!f.exists()) {
-            f.mkdir();
-        }
-        
-
     }
 
     public void doUpload() throws Exception {

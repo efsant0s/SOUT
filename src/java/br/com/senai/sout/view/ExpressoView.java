@@ -5,7 +5,6 @@
  */
 package br.com.senai.sout.view;
 
-
 import br.com.senai.sout.utils.ConversorImagemTexto;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,11 +39,11 @@ public class ExpressoView {
     private boolean textoPronto;
     private String textoTraducao;
 
-    public  List<String> getLista() {
+    public List<String> getLista() {
         return lista;
     }
 
-    public  void setLista(List<String> lista) {
+    public void setLista(List<String> lista) {
         ExpressoView.lista = lista;
     }
 
@@ -72,8 +71,6 @@ public class ExpressoView {
         this.textoTraducao = textoTraducao;
     }
 
-    
-
     public Part getImage() {
         return image;
     }
@@ -94,14 +91,19 @@ public class ExpressoView {
         this.lista.remove(exp);
     }
 
+    public String getImagemCaminho(String exp) {
+        return "/images/" + exp;
+    }
+
     public ExpressoView() {
         criaPastasSeNaoExistentes();
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         this.imagemView
                 = (ImagemView) FacesContext.getCurrentInstance().getApplication()
                         .getELResolver().getValue(elContext, null, "imagemView");
-        lista.add(imagemView.getCaminhoImagem());
-
+        if (imagemView.getCaminhoImagem() != null && !imagemView.getCaminhoImagem().isEmpty()) {
+            lista.add(imagemView.getCaminhoImagem());
+        }
     }
 
     public void criaPastasSeNaoExistentes() {
@@ -110,30 +112,17 @@ public class ExpressoView {
         if (!f.exists()) {
             f.mkdir();
         }
-        f = new File(path + "\\conjunto");
-        if (!f.exists()) {
-            f.mkdir();
-        }
-        f = new File(new File("").getAbsolutePath() + "\\imagens\\recortes");
-        if (!f.exists()) {
-            f.mkdir();
-        }
-        f = new File(new File("").getAbsolutePath() + "\\imagens\\super");
-        if (!f.exists()) {
-            f.mkdir();
-        }
-
     }
 
     public void salvaCaptura() throws Exception {
         InputStream in = image.getInputStream();
 
-        String path = new File("").getAbsolutePath() + "\\imagens\\super\\";
+        String path = new File("").getAbsolutePath() + "\\imagens\\";
         int cont = 0;
-        File f = new File(path + cont + image.getSubmittedFileName());
+        File f = new File(path + cont + "exp-" + image.getSubmittedFileName());
         while (f.exists()) {
             cont++;
-            f = new File(path + cont + image.getSubmittedFileName());
+            f = new File(path + cont + "exp-" + image.getSubmittedFileName());
         }
         f.createNewFile();
         FileOutputStream out = new FileOutputStream(f);
@@ -150,11 +139,11 @@ public class ExpressoView {
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
         upladed = true;
-        lista.add(cont + image.getSubmittedFileName());
+        lista.add(cont + "exp-" + image.getSubmittedFileName());
     }
 
     public void escreveCampo() throws Exception {
-        String textoTotal = ""; 
+        String textoTotal = "";
         ConversorImagemTexto conversorImagemTexto = new ConversorImagemTexto((ArrayList<String>) lista);
         textoTotal = conversorImagemTexto.processarImagem();
         textoTraducao = textoTotal;

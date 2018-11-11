@@ -9,7 +9,7 @@ package br.com.senai.sout.model;
  *
  * @author Celina
  */
-public class Expresso {
+public class Imagem {
     private int id;
 
     public int getId() {
@@ -30,7 +30,7 @@ public class Expresso {
         this.caminho = caminho;
     }
 
-    public Expresso(int id, String caminho) {
+    public Imagem(int id, String caminho) {
         this.id = id;
         this.caminho = caminho;
     }

@@ -5,29 +5,34 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"/>
     <h:head>
         <title>Bem vindo</title>
     </h:head>
     <h:body>
-        <h:form enctype="multipart/form-data" class="mx-auto" style="padding-bottom: 15px;height: 100%; padding-left: 15px; padding-right: 15px; border: 1px solid black; float: left; display: inline-block; width: 97%;"  >
+        <div  class="d-flex justify-content-center"  style="margin-left: 40%;padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; border: 1px solid black; display: inline-block; "  >
+            <h:form enctype="multipart/form-data" >
+                <h:outputText rendered="#{imagemView.upladed}" value="Faça o upload de imagem" />
+                <div id="upload-button">
+                    <h:inputFile value="#{imagemView.image}" rendered="#{imagemView.upladed}">
+
+                        <f:passThroughAttribute name="accept" value="image/jpg"/>
+                        <f:ajax event="change" listener="#{imagemView.salvaCaptura()}" execute="@form" render="@form"/>
+                    </h:inputFile>
+                </div>
+
+                <h:panelGroup  rendered="#{!imagemView.upladed}" layout="block" style="text-align: center">
+                    <h:graphicImage value="#{imagemView.getImagemCaminho()}"></h:graphicImage>
+                </h:panelGroup>
+                <h:commandButton     value ="Expresso" action="#{imagemView.setExpresso()}"/>
+                <h:commandButton     value ="Personalizado" action="#{imagemView.setPersonalizado()}"/>
 
 
-            <h:outputText rendered="#{!imagemView.upladed}" value="Faça o upload de imagem" />
-            <div id="upload-button">
-                <h:inputFile value="#{imagemView.image}" rendered="#{!imagemView.upladed}">
-
-                    <f:passThroughAttribute name="accept" value="image/jpg"/>
-                    <f:ajax event="change" listener="#{imagemView.salvaCaptura()}" execute="@form" render="@form"/>
-                </h:inputFile>
-            </div>
-
-            <h:panelGroup  rendered="#{imagemView.upladed}" layout="block" style="text-align: center">
-              
-            </h:panelGroup>
-            <h:commandButton     value ="Expresso" action="#{imagemView.setExpresso()}"/>
-            <h:commandButton     value ="Personalizado" action="#{imagemView.setPersonalizado()}"/>
-
-        </h:form>
+            </h:form>
+        </div>
     </h:body>
 </html>
 
