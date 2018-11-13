@@ -57,7 +57,7 @@ public class ConversorImagemTexto {
 
         
         Ocr ocr = new Ocr(); // create a new OCR engine   
-       Ocr.setUp();
+       //Ocr.setUp();
         ocr.startEngine(this.idioma, Ocr.SPEED_FASTEST); // English
         String result = ocr.recognize(new File[]{new File(this.diretorio + imagem)},
         Ocr.RECOGNIZE_TYPE_ALL, Ocr.OUTPUT_FORMAT_PLAINTEXT); // PLAINTEXT | XML | PDF | RTF       

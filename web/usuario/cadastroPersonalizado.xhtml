@@ -3,30 +3,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"     
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Recortes personalizados</title>
     </h:head>
     <h:body>
-       <h:form style="height: 100%; width: 30%; border: 1px solid black; ">
-             <h:form enctype="multipart/form-data" >
+        <h:form enctype="multipart/form-data"  style="height: 100%; width: 100%; border: 1px solid black; ">
 
+            <h:outputText rendered="#{!personalizadoView.uploaded}" value="Faça o upload de imagem" />
+            <div id="upload-button">
+                <h:inputFile value="#{personalizadoView.image}" rendered="#{!personalizadoView.uploaded}">
+                    <f:passThroughAttribute name="accept" value="image/jpg"/>
+                    <f:ajax event="change" listener="#{personalizadoView.salvaCaptura()}" execute="@form" render="@form"/>
+                </h:inputFile>
+            </div>
 
-                 <h:outputText rendered="#{!personalizadoView.uploaded}" value="Faça o upload de imagem" />
-                <div id="upload-button">
-                    <h:inputFile value="#{personalizadoView.image}" rendered="#{!personalizadoView.uploaded}">
+            <h:panelGroup  rendered="#{personalizadoView.uploaded}" layout="block" style="text-align: center">
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="console" value="Console:" />
+                    <p:selectOneRadio id="console" value="#{personalizadoView.tipoRecorte}">
+                        <f:selectItem itemLabel="Texto" itemValue="TXT" />
+                        <f:selectItem itemLabel="Imagem" itemValue="IMG"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+            </h:panelGroup>
+			
+            <h:panelGrid columns="2">
+                <p:imageCropper value="#{personalizadoView.croppedImage}" image="#{personalizadoView.imagemCaminho}" initialCoords="225,75,300,125"/>
+            </h:panelGrid>
 
-                        <f:passThroughAttribute name="accept" value="image/jpg"/>
-                        <f:ajax event="change" listener="#{personalizadoView.salvaCaptura()}" execute="@form" render="@form"/>
-                    </h:inputFile>
-                </div>
-
-                <h:panelGroup  rendered="#{personalizadoView.uploaded}" layout="block" style="text-align: center">
-                    <h:graphicImage value="#{personalizadoView.getImagemCaminho()}"></h:graphicImage>
-                </h:panelGroup>
-
-            </h:form>
-        </h:form>
+            <p:commandButton value="Crop" action="#{personalizadoView.crop}"  />
+ 
+        </h:form> 
     </h:body>
 </html>
+
 

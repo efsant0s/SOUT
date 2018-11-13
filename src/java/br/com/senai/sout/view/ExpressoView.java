@@ -6,20 +6,18 @@
 package br.com.senai.sout.view;
 
 import br.com.senai.sout.utils.ConversorImagemTexto;
+import br.com.senai.sout.utils.GeradorDeArquivos;
+import br.com.senai.sout.utils.MetodosUtils;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.servlet.http.Part;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -38,6 +36,22 @@ public class ExpressoView {
     private boolean upladed;
     private boolean textoPronto;
     private String textoTraducao;
+    private String nomeArquivoPdf;
+    
+    
+
+    public String getNomeArquivoPdf() {
+        return nomeArquivoPdf;
+    }
+     public String getLocalArquivoPDF() {
+        return "http://localhost:8080/SOUT/images/"+nomeArquivoPdf;
+    }
+
+    public void setNomeArquivoPdf(String nomeArquivoPdf) {
+        this.nomeArquivoPdf = nomeArquivoPdf;
+    }
+    
+
 
     public List<String> getLista() {
         return lista;
@@ -67,28 +81,19 @@ public class ExpressoView {
         return textoTraducao;
     }
 
-    public void setTextoTraducao(String textoTraducao) {
-        this.textoTraducao = textoTraducao;
-    }
-
     public Part getImage() {
         return image;
-    }
-
-    public void setImage(Part image) {
-        this.image = image;
     }
 
     public boolean isUpladed() {
         return upladed;
     }
 
-    public void setUpladed(boolean upladed) {
-        this.upladed = upladed;
-    }
-
     public void remove(String exp) {
         this.lista.remove(exp);
+        if (lista.isEmpty()) {
+            upladed = false;
+        }
     }
 
     public String getImagemCaminho(String exp) {
@@ -96,7 +101,7 @@ public class ExpressoView {
     }
 
     public ExpressoView() {
-        criaPastasSeNaoExistentes();
+        MetodosUtils.criaPastasSeNaoExistentes();
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         this.imagemView
                 = (ImagemView) FacesContext.getCurrentInstance().getApplication()
@@ -106,12 +111,21 @@ public class ExpressoView {
         }
     }
 
-    public void criaPastasSeNaoExistentes() {
-        String path = new File("").getAbsolutePath() + "\\imagens";
-        File f = new File(path);
-        if (!f.exists()) {
-            f.mkdir();
+    public void salvaPDF() {
+
+        String path = new File("").getAbsolutePath() + "\\imagens\\";
+        int cont = 0;
+        File f = new File(path + cont + "pdfTexto.pdf");
+        while (f.exists()) {
+            cont++;
+            f = new File(path + cont + "pdfTexto.pdf");
         }
+        this.nomeArquivoPdf = ( cont + "pdfTexto.pdf");
+
+         new GeradorDeArquivos(cont + "pdfTexto", textoTraducao).generatePDF();
+        ExternalContext t = FacesContext.getCurrentInstance().getExternalContext();
+        
+        
     }
 
     public void salvaCaptura() throws Exception {
@@ -148,5 +162,20 @@ public class ExpressoView {
         textoTotal = conversorImagemTexto.processarImagem();
         textoTraducao = textoTotal;
         this.textoPronto = true;
+        salvaPDF();
     }
+
+    public void setImage(Part image) {
+        this.image = image;
+    }
+
+    public void setUpladed(boolean upladed) {
+        this.upladed = upladed;
+    }
+
+    public void setTextoTraducao(String textoTraducao) {
+        this.textoTraducao = textoTraducao;
+    }
+
+    
 }

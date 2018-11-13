@@ -5,15 +5,18 @@
  */
 package br.com.senai.sout.view;
 
-import br.com.senai.sout.model.Imagem;
+import br.com.senai.sout.utils.MetodosUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.List;
 import javax.el.ELContext;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.http.Part;
+import org.primefaces.model.CroppedImage;
 
 /**
  *
@@ -26,7 +29,33 @@ public class PersonalizadoView {
     private Part image;
     private ImagemView imagemView;
     private List<String> listaImagem;
+    private String tipoRecorte;
+    private String nomeRecorte;
     private static boolean uploaded;
+
+    public String getNomeRecorte() {
+        return nomeRecorte;
+    }
+
+    public void setNomeRecorte(String nomeRecorte) {
+        this.nomeRecorte = nomeRecorte;
+    }
+
+    public String getNewImageName() {
+        return newImageName;
+    }
+
+    public void setNewImageName(String newImageName) {
+        this.newImageName = newImageName;
+    }
+
+    public String getTipoRecorte() {
+        return tipoRecorte;
+    }
+
+    public void setTipoRecorte(String tipoRecorte) {
+        this.tipoRecorte = tipoRecorte;
+    }
 
     public ImagemView getImagemView() {
         return imagemView;
@@ -73,35 +102,33 @@ public class PersonalizadoView {
     }
 
     public PersonalizadoView() {
-        criaPastasSeNaoExistentes();
+        MetodosUtils.criaPastasSeNaoExistentes();
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         this.imagemView
                 = (ImagemView) FacesContext.getCurrentInstance().getApplication()
                         .getELResolver().getValue(elContext, null, "imagemView");
         if (imagemView.getCaminhoImagem() != null && !imagemView.getCaminhoImagem().isEmpty()) {
-            listaImagem.add(imagemView.getCaminhoImagem());
+            this.caminhoImagem = imagemView.getCaminhoImagem();
+            uploaded = true;
         }
 
     }
 
-    public void criaPastasSeNaoExistentes() {
-        String path = new File("").getAbsolutePath() + "\\imagens";
-        File f = new File(path);
-        if (!f.exists()) {
-            f.mkdir();
+    private File criaArquivo(String prefixoNomeArquivo) {
+        String path = new File("").getAbsolutePath() + "\\imagens\\";
+        int cont = 0;
+        File f = new File(path + cont + prefixoNomeArquivo + image.getSubmittedFileName());
+        while (f.exists()) {
+            cont++;
+            f = new File(path + cont + prefixoNomeArquivo + image.getSubmittedFileName());
         }
+        this.caminhoImagem = cont + prefixoNomeArquivo + image.getSubmittedFileName();
+        return f;
     }
 
     public void salvaCaptura() throws Exception {
         InputStream in = image.getInputStream();
-
-        String path = new File("").getAbsolutePath() + "\\imagens\\";
-        int cont = 0;
-        File f = new File(path + cont + "pers-" + image.getSubmittedFileName());
-        while (f.exists()) {
-            cont++;
-            f = new File(path + cont + "pers-" + image.getSubmittedFileName());
-        }
+        File f = criaArquivo("pers-");
         f.createNewFile();
         FileOutputStream out = new FileOutputStream(f);
 
@@ -113,10 +140,38 @@ public class PersonalizadoView {
         }
         out.close();
         in.close();
-
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
         uploaded = true;
-        this.caminhoImagem = cont + "pers-" + image.getSubmittedFileName();
+
+    }
+    private CroppedImage croppedImage;
+
+    private String newImageName;
+
+    public CroppedImage getCroppedImage() {
+        return croppedImage;
+    }
+
+    public void setCroppedImage(CroppedImage croppedImage) {
+        this.croppedImage = croppedImage;
+    }
+
+    public void crop() {
+        if (croppedImage == null) {
+            return;
+        }
+        uploaded = false;
+        FileImageOutputStream imageOutput;
+        try {
+            imageOutput = new FileImageOutputStream(criaArquivo("rec-"));
+            imageOutput.write(croppedImage.getBytes(), 0, croppedImage.getBytes().length);
+            imageOutput.close();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Cropping failed."));
+            return;
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Cropping finished."));
     }
 
 }

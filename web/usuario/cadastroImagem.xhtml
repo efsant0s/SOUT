@@ -1,10 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"     
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -13,24 +11,22 @@
         <title>Bem vindo</title>
     </h:head>
     <h:body>
-        <div  class="d-flex justify-content-center"  style="margin-left: 40%;padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; border: 1px solid black; display: inline-block; "  >
+        <div  class="d-flex justify-content-center"  style="padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; border: 1px solid black; display: inline-block; "  >
             <h:form enctype="multipart/form-data" >
-                <h:outputText rendered="#{imagemView.upladed}" value="Faça o upload de imagem" />
+                <h:outputText rendered="#{!imagemView.arquivoEnviado}" value="Faça o upload de imagem" />
                 <div id="upload-button">
-                    <h:inputFile value="#{imagemView.image}" rendered="#{imagemView.upladed}">
+                    <h:inputFile value="#{imagemView.image}" rendered="#{!imagemView.arquivoEnviado}">
 
                         <f:passThroughAttribute name="accept" value="image/jpg"/>
                         <f:ajax event="change" listener="#{imagemView.salvaCaptura()}" execute="@form" render="@form"/>
                     </h:inputFile>
                 </div>
 
-                <h:panelGroup  rendered="#{!imagemView.upladed}" layout="block" style="text-align: center">
+                <h:panelGroup  rendered="#{imagemView.arquivoEnviado}" layout="block" style="text-align: center">
                     <h:graphicImage value="#{imagemView.getImagemCaminho()}"></h:graphicImage>
                 </h:panelGroup>
                 <h:commandButton     value ="Expresso" action="#{imagemView.setExpresso()}"/>
                 <h:commandButton     value ="Personalizado" action="#{imagemView.setPersonalizado()}"/>
-
-
             </h:form>
         </div>
     </h:body>

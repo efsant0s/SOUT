@@ -5,6 +5,7 @@
  */
 package br.com.senai.sout.view;
 
+import br.com.senai.sout.utils.MetodosUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -24,19 +25,25 @@ public class ImagemView {
     private String caminhoImagem;
     private Part image;
     private String tipo;
-    private static boolean upladed;
+    private static boolean arquivoEnviado;
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
     public ImagemView() {
-        this.criaPastasSeNaoExistentes();
+       MetodosUtils.criaPastasSeNaoExistentes();
     }
 
     public String setPersonalizado() {
         this.tipo = "PER";
-        return "cadastroSuperExpresso";
+        this.arquivoEnviado = false;
+        return "cadastroPersonalizado";
     }
 
     public String setExpresso() {
         this.tipo = "EXP";
+        this.arquivoEnviado = false;
         return "cadastroSuperExpresso";
     }
 
@@ -64,22 +71,15 @@ public class ImagemView {
         return "/images/" + this.caminhoImagem;
     }
 
-    public boolean isUpladed() {
-        return upladed;
+    public boolean isArquivoEnviado() {
+        return arquivoEnviado;
     }
 
-    public void setUpladed(boolean upladed) {
-        this.upladed = upladed;
+    public void setArquivoEnviado(boolean upladed) {
+        this.arquivoEnviado = upladed;
     }
 
-    private void criaPastasSeNaoExistentes() {
-        String path = new File("").getAbsolutePath() + "\\imagens";
-        File f = new File(path);
-        if (!f.exists()) {
-            f.mkdir();
-        }
-
-    }
+    
 
     public void salvaCaptura() throws Exception {
         InputStream in = image.getInputStream();
@@ -104,7 +104,7 @@ public class ImagemView {
         in.close();
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("path", f.getAbsolutePath());
-        upladed = true;
+        arquivoEnviado = true;
         this.caminhoImagem = cont + "ref-" + image.getSubmittedFileName();
     }
 

@@ -4,18 +4,29 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"     
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      >
+
+      xmlns:p="http://primefaces.org/ui">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet"/>
-    
+
     <h:head>
         <title>Salvar capturas</title>
     </h:head>
+    <script type="text/javascript">
+        //<![CDATA[
+        function start() {
+            PF('statusDialog').show();
+        }
+
+        function stop() {
+            PF('statusDialog').hide();
+        }
+        //]]>
+    </script> 
     <h:body>
         <h:form enctype="multipart/form-data" class="d-flex justify-content-center" style="padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; border: 1px solid black;"  >
-            <h:inputHidden  value ="#{imagemView}"/>
             <h:outputText  value="Adicionar imagem" />        
             <div id="upload-button">
                 <h:inputFile value="#{expressoView.image}">
@@ -45,6 +56,9 @@
 
             <h:panelGroup rendered="#{expressoView.textoPronto}"   layout="block" style="text-align: center">
                 <h:inputTextarea rows="10" cols="150" value="#{expressoView.textoTraducao}" />
+                <br/>
+
+                <p:button  value="Abrir PDF" href="#{expressoView.localArquivoPDF}" icon="pi pi-arrow-down" />
             </h:panelGroup>
             <h:commandButton action="cadastroImagem" value="Voltar"/>
             <h:commandButton action="#{expressoView.escreveCampo()}" value="Transcrever texto da imagem"/>
