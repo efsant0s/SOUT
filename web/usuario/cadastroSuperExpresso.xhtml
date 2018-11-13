@@ -43,7 +43,13 @@
                 <ui:repeat var="elem" value="#{expressoView.lista}">
                     <tr>                       
                         <td>
-                            <h:graphicImage value="#{expressoView.getImagemCaminho(elem)}"></h:graphicImage>
+                            
+                           
+                            <p:graphicImage id="aspectRatio" value="#{expressoView.getImagemCaminho(elem)}" style="max-width: 800px;" ></p:graphicImage>
+
+<p:resizable for="aspectRatio" aspectRatio="true"/>
+                            
+                           
                             <h:inputText readonly="true" style="width: 90%" value="#{elem}" />
                         </td>
                         <td>

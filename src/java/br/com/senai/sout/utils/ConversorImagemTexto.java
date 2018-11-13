@@ -27,7 +27,6 @@ public class ConversorImagemTexto {
         this.diretorio = new File("").getAbsolutePath() + "\\imagens\\";
         this.idioma = "por";
     }
-    
 
     public ArrayList<String> getImagem() {
         return imagens;
@@ -54,15 +53,18 @@ public class ConversorImagemTexto {
     }
 
     public String retirarTexto(String imagem) {
+        try {
+            new Ocr().setUp();
+        } finally {
 
-        
-        Ocr ocr = new Ocr(); // create a new OCR engine   
-       //Ocr.setUp();
-        ocr.startEngine(this.idioma, Ocr.SPEED_FASTEST); // English
-        String result = ocr.recognize(new File[]{new File(this.diretorio + imagem)},
-        Ocr.RECOGNIZE_TYPE_ALL, Ocr.OUTPUT_FORMAT_PLAINTEXT); // PLAINTEXT | XML | PDF | RTF       
-        ocr.stopEngine();
-        return result;
+            Ocr ocr = new Ocr(); // create a new OCR engine   
+            ocr.startEngine(this.idioma, Ocr.SPEED_FASTEST); // English
+            String result = ocr.recognize(new File[]{new File(this.diretorio + imagem)},
+                    Ocr.RECOGNIZE_TYPE_ALL, Ocr.OUTPUT_FORMAT_PLAINTEXT); // PLAINTEXT | XML | PDF | RTF       
+            ocr.stopEngine();
+            return result;
+
+        }
 
     }
 

@@ -11,7 +11,7 @@
         <title>Bem vindo</title>
     </h:head>
     <h:body>
-        <div  class="d-flex justify-content-center"  style="padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; border: 1px solid black; display: inline-block; "  >
+        <div  class="d-flex justify-content-center" style="border: 1px solid black; display: inline-block; "  >
             <h:form enctype="multipart/form-data" >
                 <h:outputText rendered="#{!imagemView.arquivoEnviado}" value="Faça o upload de imagem" />
                 <div id="upload-button">
@@ -21,9 +21,10 @@
                         <f:ajax event="change" listener="#{imagemView.salvaCaptura()}" execute="@form" render="@form"/>
                     </h:inputFile>
                 </div>
+                
 
                 <h:panelGroup  rendered="#{imagemView.arquivoEnviado}" layout="block" style="text-align: center">
-                    <h:graphicImage value="#{imagemView.getImagemCaminho()}"></h:graphicImage>
+                    <h:graphicImage value="#{imagemView.getImagemCaminho()}" style="max-width: 800px"></h:graphicImage>
                 </h:panelGroup>
                 <h:commandButton     value ="Expresso" action="#{imagemView.setExpresso()}"/>
                 <h:commandButton     value ="Personalizado" action="#{imagemView.setPersonalizado()}"/>
