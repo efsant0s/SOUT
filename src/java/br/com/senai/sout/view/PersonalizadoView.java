@@ -144,9 +144,9 @@ public class PersonalizadoView {
         uploaded = true;
 
     }
-    private CroppedImage croppedImage;
+    private static CroppedImage croppedImage;
 
-    private String newImageName;
+    private static String newImageName;
 
     public CroppedImage getCroppedImage() {
         return croppedImage;
