@@ -2,14 +2,23 @@ package br.com.senai.sout.view;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
+import static org.apache.jasper.tagplugins.jstl.core.Out.output;
 import org.primefaces.model.CroppedImage;
 
 @ManagedBean
+@ViewScoped
 public class CropperView {
 
     private CroppedImage croppedImage;
@@ -25,19 +34,21 @@ public class CropperView {
     public void setCroppedImage(CroppedImage croppedImage) {
         this.croppedImage = croppedImage;
     }
+    public String getCaminhoImagem(){
+        return "/images/0exp-teste.png";
+    }
 
     public void crop() {
         if (croppedImage == null) {
             return;
         }
-        System.out.println("xa2");
+
         contador++;
         
         setNewImageName("" + contador);
-        String newFileName = "C:\\Users\\Aluno\\Downloads\\PrintReportV16\\PrintReport\\web\\resources\\images\\img_crop\\" + getNewImageName() + ".jpg";
-        
-        System.out.println(newFileName);
-        
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        String newFileName = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "demo"
+                + File.separator + "images" + File.separator + "crop" + File.separator + getNewImageName() + ".jpg";
 
         FileImageOutputStream imageOutput;
         BufferedImage img;
